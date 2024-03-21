@@ -21,7 +21,7 @@ export const App = () => {
   }, [dispatch]);
 
   return isRefreshing ? (
-    <b>Refreshing...</b>
+    <b>Refreshing user...</b>
   ) : (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
@@ -29,7 +29,7 @@ export const App = () => {
         <Route
           path="/register"
           element={
-            //prettier-ignore
+            // prettier-ignore
             <RestrictedRoute redirectTo="/contacts" component={<RegisterPage />} />
           }
         />

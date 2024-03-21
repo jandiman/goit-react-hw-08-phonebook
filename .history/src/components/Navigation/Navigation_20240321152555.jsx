@@ -18,7 +18,7 @@ export const Navigation = () => {
           to="/contacts"
           className={({ isActive }) => (isActive ? css.linkActive : css.link)}
         >
-          Contacts
+          Tasks
         </NavLink>
       )}
     </nav>
