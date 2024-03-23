@@ -26,20 +26,11 @@ export const register = createAsyncThunk(
       setAuthHeader(res.data.token);
       return res.data;
     } catch (error) {
-      if (error.response) {
-        // Handle known status codes
-        if (error.response.status === 409) {
-          return thunkAPI.rejectWithValue('Email address is already in use');
-        } else {
-          // Throw error for unexpected status codes
-          throw new Error(
-            `Registration failed with status code: ${error.response.status}`
-          );
-        }
-      } else {
-        // Handle network errors
-        throw new Error('Network error occurred during registration');
+      if (error.response && error.response.status === 409) {
+        // If status code is 409 (Conflict), email is already in use
+        return thunkAPI.rejectWithValue('Email address is already in use');
       }
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

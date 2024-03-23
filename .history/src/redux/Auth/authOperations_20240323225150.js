@@ -15,31 +15,23 @@ const clearAuthHeader = () => {
 
 /*
  * POST @ /users/signup
- * body: { name, email, password }
+ * body: { name, email, password, confirmPassword }
  */
 export const register = createAsyncThunk(
   'auth/register',
-  async ({ name, email, password }, thunkAPI) => {
+  async ({ name, email, password, confirmPassword }, thunkAPI) => {
     try {
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        throw new Error('Passwords do not match');
+      }
+
       const res = await axios.post('/users/signup', { name, email, password });
       // After successful registration, add the token to the HTTP header
       setAuthHeader(res.data.token);
       return res.data;
     } catch (error) {
-      if (error.response) {
-        // Handle known status codes
-        if (error.response.status === 409) {
-          return thunkAPI.rejectWithValue('Email address is already in use');
-        } else {
-          // Throw error for unexpected status codes
-          throw new Error(
-            `Registration failed with status code: ${error.response.status}`
-          );
-        }
-      } else {
-        // Handle network errors
-        throw new Error('Network error occurred during registration');
-      }
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

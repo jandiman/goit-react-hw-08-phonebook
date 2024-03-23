@@ -33,21 +33,6 @@ export const RegisterForm = () => {
       return;
     }
 
-    // Password validation checks
-    if (
-      password.length < 8 ||
-      !/[A-Z]/.test(password) ||
-      !/\d/.test(password) ||
-      !/^[a-zA-Z0-9]+$/.test(password)
-    ) {
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        error:
-          'Password should be at least 8 characters, contain at least 1 capital letter, and be a combination of letters and numbers',
-      }));
-      return;
-    }
-
     dispatch(register({ name, email, password }));
     // Clear form fields after submission
     setFormData({
